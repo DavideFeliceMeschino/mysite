@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title  %}Lista Prodotti{% endblock title  %}
+
+{% block content %}
+
+<!--menu laterale con categorie-->
+<div class="container py-5">
+    <div class="row">
+        <!--lista categorie a sinistra-->
+        <div class=" col-lg-3">
+            <h1 class="h2 pb-4">Categorie</h1>
+            <ul class="list-unstyled"><!--accordion è un area nascosta che si apre quandi ci clicci sopra-->
+                {% comment %} <li><a class="collapsed d-flex justify-content-between h3 categorie_shop_list" href="{% url 'shop:lista_prodotti' %}">All</a></li>
+                {% for categoria in categorie  %}
+                <li>
+                    <a class="collapsed d-flex justify-content-between h3 categorie_shop_list" href="{{categoria.get_absolute_url}}">
+                        {{categoria.nome}}                       
+                    </a>                   
+                </li>
+                {% endfor %} {% endcomment %}
+            </ul>
+            <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
+                <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+                  <svg class="bi me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
+                  <span class="fs-5 fw-semibold">Prodotti</span>
+                </a>
+                <ul class="list-unstyled ps-0">                    
+                  <li class="mb-1">
+                    {% for categoria in categorie %}
+                    {% if not categorie.cat_princ %}
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                      {{categoria.nome}}
+                    </button>
+                    {% else %}
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                        {{cat_princ.nome}}
+                    </button>
+                        {% for cat_princ in categorie%}
+                    <div class="collapse show" id="home-collapse">
+                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-dark rounded">{{cat_princ.nome}}</a></li>
+                      </ul>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {%endfor%}
+                  </li>
+                 
+                </ul>
+              </div>
+        </div>
+        <!--mostra tutti i prodotti o il nome della categoria selezionata e prodotti di quella categoria-->
+        <div class="col-lg-9">
+            <div class="row">
+                <div class="col-md-6">
+                    <li class="list-inline-item">
+                    <span class="h3 text-dark text-decoration-none mr-3">{% if categoria %}{{categoria}}{% else %}Prodotti{% endif %}</span>
+                    </li>                                      
+                </div>
+                {% comment %} <div class="col-md-6 pb-4">
+                    <div class="d-flex">
+                        <select class="form-control">
+                            <option>Featured</option>
+                            <option>A to Z</option>
+                            <option>Item</option>
+                        </select>
+                    </div>
+                </div> {% endcomment %}
+            </div>
+    <div class="col-lg-9">
+        
+        <div class="row">
+            {% for prodotto in prodotti  %}
+            <div class="col-md-4">
+                
+                <div class="card mb-4 product-wap rounded-0">                    
+                    <div class="card rounded-0">                       
+                        <img class="card-img rounded-0 img-fluid" src="{{prodotto.img_resize.url}}"><!--img-->
+                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                            <ul class="list-unstyled"><!--cuore/occhio/carrello sull img-->
+                                <li><a class="btn btn-success text-white" href="shop-single.html"><i class="far fa-heart"></i></a></li>
+                                <li><a class="btn btn-success text-white mt-2" href="{{prodotto.get_absolute_url}}"><i class="far fa-eye"></i></a></li>
+                                <li><a class="btn btn-success text-white mt-2" href="shop-single.html"><i class="fas fa-cart-plus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <a href="{{prodotto.get_absolute_url}}" class="titolo_shop_list">{{prodotto.nome}}</a><!--Nome+link scheda prodotto-->
+                        <p>{{prodotto.descrizione|safe}} </p>
+                        <hr>  
+                        <p>Cat: {{prodotto.categoria}}</p>
+                        <hr>                        
+                        <p class="text-center mb-0">Prezzo:{{prodotto.prezzo}}</p>
+                    </div>                    
+                </div>                 
+            </div>  
+            {% endfor %}             
+        </div>
+        <!--pagination-->
+        <div div="row">
+            <ul class="pagination pagination-lg justify-content-end">
+                <li class="page-item disabled">
+                    <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" href="#" tabindex="-1">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" href="#">2</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" href="#">3</a>
+                </li>
+            </ul>
+        </div>
+        
+    
+
+{% include "pagination.html" with page=prodotti %}
+
+
+{% endblock content %}
+
+
+

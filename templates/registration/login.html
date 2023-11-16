@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Login{% endblock title %}
+{% block content %}
+
+
+
+{% comment %} <div class="login-box">
+    <form method="post" action="{% url "account:login" %}">
+        <h1>Login</h1>
+        <div class="textbox">          
+        {{form.as_div}}        
+        {% csrf_token %}
+        </div>
+        <input type="hidden" name="next" value={{next}}>
+        <input type="submit" class ="btn" value="LogIn">
+    </form>
+</div>  {% endcomment %}
+
+<form method="post" action="{% url "account:login" %}">
+    {% csrf_token %}
+    <div class="login-box">
+      <h1>Login Page</h1>
+      <div class="textbox">
+          <i class="fa fa-user" aria-hidden="true"></i>
+          <input type="text" placeholder="Username" name='username' value="">
+      </div>
+    
+      <div class="textbox">
+          <i class="fa fa-lock" aria-hidden="true"></i>
+          <input type="password" placeholder="Password" name='password' value="">
+      </div>
+    
+      <input type="submit" class="btn" name="" value="LogIn">
+    </div>
+</form>
+
+
+
+{% endblock content %}
